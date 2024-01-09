@@ -59,8 +59,8 @@ window.addEventListener('DOMContentLoaded', () => {
         let initialMouseY;
         let initialHeight;
 
-        const minHeight = 10; // Minimum height in vh
-        const maxHeight = 90; // Maximum height in vh
+        const minHeight = 10;
+        const maxHeight = 90;
 
         openPopupButton.addEventListener('click', () => {
             resizable.classList.toggle('active');
@@ -70,24 +70,28 @@ window.addEventListener('DOMContentLoaded', () => {
             resizable.classList.remove('active');
         });
 
-        popupBar.addEventListener('mousedown', (e) => {
+        popupBar.addEventListener('mousedown', (e) => { // not here
+            console.log('there')
             isResizing = true;
             initialMouseY = e.clientY;
             initialHeight = popupIframe.offsetHeight;
 
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', () => {
-                isResizing = false;
-                document.removeEventListener('mousemove', handleMouseMove);
-            });
+            window.addEventListener('mousemove', handleMouseMove);
         });
 
+        popupBar.addEventListener('mouseup', () => {
+            console.log('here')
+            isResizing = false;
+            window.removeEventListener('mousemove', handleMouseMove);
+        });
+
+
   function handleMouseMove(e) {
+    
             if (isResizing) {
                 const deltaY = e.clientY - initialMouseY;
                 const newHeight = Math.min(maxHeight * window.innerHeight / 100, Math.max(initialHeight - deltaY, minHeight * window.innerHeight / 100));
 
-                // Update the iframe height
                 popupIframe.style.height = `${newHeight}px`;
             }
         }
