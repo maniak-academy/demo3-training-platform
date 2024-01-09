@@ -13,10 +13,10 @@
 
 <style>
     .resizable {
-        display: none;
+        visibility: hidden;
     }
     .resizable.active {
-        display: block;
+        visibility: visible;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -50,7 +50,7 @@
 window.addEventListener('DOMContentLoaded', () => {
     const resizable = document.querySelector('.resizable');
         const openPopupButton = document.getElementById('open-popup-button');
-        const popupBar = document.querySelector('.resizable__bar');
+        const popupBar = document.querySelector('.resizable__wrapper');
         const popupIframe = document.querySelector('.resizable iframe');
         const popupCloseButton = document.querySelector('.resizable__close-icon');
 
@@ -93,12 +93,12 @@ window.addEventListener('DOMContentLoaded', () => {
             window.removeEventListener('touchend', handleTouchEnd);
         });
 
-        popupIframe.addEventListener('mouseenter', () => {
-            isResizing = false;
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
-            window.removeEventListener('touchend', handleTouchEnd);
-        })
+        // popupIframe.addEventListener('mouseenter', () => {
+        //     isResizing = false;
+        //     window.removeEventListener('mousemove', handleMouseMove);
+        //     window.removeEventListener('touchmove', handleTouchMove);
+        //     window.removeEventListener('touchend', handleTouchEnd);
+        // })
 
         function handleMouseMove(e) {
             if (isResizing) {
