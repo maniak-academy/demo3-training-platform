@@ -35,38 +35,6 @@
   ></iframe>
 </div>
 
-<style>
-  .resizable {
-    visibility: hidden;
-  }
-  .resizable.active {
-    visibility: visible;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-  }
-  .resizable__wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 0;
-    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
-    background-color: #2b2c30;
-  }
-  .resizable__bar {
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-  }
-  .resizable__close-icon {
-    align-self: flex-end;
-    margin: 0 8px;
-    cursor: pointer;
-  }
-</style>
-
 <script>
   window.addEventListener("DOMContentLoaded", () => {
     const resizable = document.querySelector(".resizable");
