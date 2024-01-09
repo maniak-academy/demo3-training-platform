@@ -49,13 +49,12 @@
 
 window.addEventListener('DOMContentLoaded', () => {
     const resizable = document.querySelector('.resizable');
-    const openPopupButton = document.getElementById('open-popup-button');
-    const popupBar = document.querySelector('.resizable__bar');
-    const popupIframe = document.querySelector('.resizable iframe');
-    const popupCloseButton = document.querySelector('.resizable__close-icon');
+        const openPopupButton = document.getElementById('open-popup-button');
+        const popupBar = document.querySelector('.resizable__bar');
+        const popupIframe = document.querySelector('.resizable iframe');
+        const popupCloseButton = document.querySelector('.resizable__close-icon');
 
-    
-    let isResizing = false;
+        let isResizing = false;
         let initialMouseY;
         let initialHeight;
 
@@ -70,24 +69,32 @@ window.addEventListener('DOMContentLoaded', () => {
             resizable.classList.remove('active');
         });
 
-        popupBar.addEventListener('mousedown', (e) => { // not here
-            console.log('there')
-            isResizing = true;
-            initialMouseY = e.clientY;
-            initialHeight = popupIframe.offsetHeight;
+        popupBar.addEventListener('mousedown', (e) => {
+            e.preventDefault()
+            if (e.touches && e.touches.length === 1) {
+                isResizing = true;
+                initialMouseY = e.touches[0].clientY;
+                initialHeight = popupIframe.offsetHeight;
 
-            window.addEventListener('mousemove', handleMouseMove);
+                window.addEventListener('touchmove', handleTouchMove);
+                window.addEventListener('touchend', handleTouchEnd);
+            } else {
+                isResizing = true;
+                initialMouseY = e.clientY;
+                initialHeight = popupIframe.offsetHeight;
+
+                window.addEventListener('mousemove', handleMouseMove);
+            }
         });
 
         popupBar.addEventListener('mouseup', () => {
-            console.log('here')
             isResizing = false;
             window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
         });
 
-
-  function handleMouseMove(e) {
-    
+        function handleMouseMove(e) {
             if (isResizing) {
                 const deltaY = e.clientY - initialMouseY;
                 const newHeight = Math.min(maxHeight * window.innerHeight / 100, Math.max(initialHeight - deltaY, minHeight * window.innerHeight / 100));
@@ -95,5 +102,23 @@ window.addEventListener('DOMContentLoaded', () => {
                 popupIframe.style.height = `${newHeight}px`;
             }
         }
+
+        function handleTouchMove(e) {
+            if (isResizing && e.touches && e.touches.length === 1) {
+                const deltaY = e.touches[0].clientY - initialMouseY;
+                const newHeight = Math.min(maxHeight * window.innerHeight / 100, Math.max(initialHeight - deltaY, minHeight * window.innerHeight / 100));
+
+                popupIframe.style.height = `${newHeight}px`;
+            }
+        }
+
+        function handleTouchEnd() {
+            if (isResizing) {
+                isResizing = false;
+                window.removeEventListener('touchmove', handleTouchMove);
+                window.removeEventListener('touchend', handleTouchEnd);
+            }
+        }
     });
+
 </script>
