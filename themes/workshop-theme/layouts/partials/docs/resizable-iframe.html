@@ -70,7 +70,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         popupBar.addEventListener('mousedown', (e) => {
-            e.preventDefault()
             if (e.touches && e.touches.length === 1) {
                 isResizing = true;
                 initialMouseY = e.touches[0].clientY;
@@ -93,6 +92,13 @@ window.addEventListener('DOMContentLoaded', () => {
             window.removeEventListener('touchmove', handleTouchMove);
             window.removeEventListener('touchend', handleTouchEnd);
         });
+
+        popupIframe.addEventListener('mouseenter', () => {
+            isResizing = false;
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
+        })
 
         function handleMouseMove(e) {
             if (isResizing) {
