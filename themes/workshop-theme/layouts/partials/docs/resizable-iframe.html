@@ -51,33 +51,43 @@
       resizable.classList.remove("active");
     });
 
-    interact(resizable).resizable({
-      edges: { bottom: true, top: true },
+    if (window.innerWidth <= 576) {
+      resizable.style.height = "100vh";
+      resizable.style.maxHeight = "100%";
 
-      listeners: {
-        move(event) {
-          var target = event.target;
-          var y = parseFloat(target.getAttribute("data-y")) || 0;
+      popupBar.style.display = "none";
+      popupCloseButton.style.marginLeft = "auto";
+    } else {
+      interact(resizable).resizable({
+        edges: { bottom: true, top: true },
 
-          resizable.style.height = event.rect.height + "px";
+        listeners: {
+          move(event) {
+            var target = event.target;
+            var y = parseFloat(target.getAttribute("data-y")) || 0;
 
-          y += event.deltaRect.top;
+            resizable.style.height = event.rect.height + "px";
 
-          target.setAttribute("data-y", y);
+            y += event.deltaRect.top;
+
+            target.setAttribute("data-y", y);
+          },
         },
-      },
-      modifiers: [
-        interact.modifiers.restrictEdges({
-          outer: "parent",
-        }),
+        modifiers: [
+          interact.modifiers.restrictEdges({
+            outer: "parent",
+          }),
 
-        interact.modifiers.restrictSize({
-          min: { height: 250 },
-          max: { height: window.innerHeight - 70 },
-        }),
-      ],
+          interact.modifiers.restrictSize({
+            min: { height: 250 },
+            max: { height: window.innerHeight - 70 },
+          }),
+        ],
 
-      inertia: true,
-    });
+        inertia: true,
+      });
+      popupBar.style.display = "block";
+      popupCloseButton.style.marginLeft = "initial";
+    }
   });
 </script>
