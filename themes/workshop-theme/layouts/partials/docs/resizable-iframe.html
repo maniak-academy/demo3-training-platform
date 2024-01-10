@@ -42,6 +42,7 @@
     const popupBar = document.querySelector(".resizable__bar");
     const popupIframe = document.querySelector(".resizable iframe");
     const popupCloseButton = document.querySelector(".resizable__close-icon");
+    const pageContent = document.querySelector('.content');
 
     openPopupButton.addEventListener("click", () => {
       resizable.classList.toggle("active");
@@ -49,6 +50,7 @@
 
     popupCloseButton.addEventListener("click", () => {
       resizable.classList.remove("active");
+      pageContent.style.paddingBottom = '0px';
     });
 
     if (window.innerWidth <= 576) {
@@ -67,6 +69,8 @@
             var y = parseFloat(target.getAttribute("data-y")) || 0;
 
             resizable.style.height = event.rect.height + "px";
+
+            pageContent.style.paddingBottom = event.rect.height + 200 + "px";
 
             y += event.deltaRect.top;
 
