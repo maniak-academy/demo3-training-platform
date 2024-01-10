@@ -36,7 +36,6 @@
 </div>
 
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
     const resizable = document.querySelector(".resizable");
     const openPopupButton = document.getElementById("open-popup-button");
     const popupBar = document.querySelector(".resizable__bar");
@@ -44,12 +43,32 @@
     const popupCloseButton = document.querySelector(".resizable__close-icon");
     const pageContent = document.querySelector('.content');
 
+
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('showTerminal') === 'true') {
+        resizable.classList.add('active')
+        resizable.style.height = localStorage.getItem('iframeHeight') + 'px';
+        pageContent.style.paddingBottom = localStorage.getItem('iframeHeight') + 40 + 'px';
+      } else {
+        resizable.classList.remove('active');
+        pageContent.style.paddingBottom = '0px';
+      }
+    })
+
+
+  window.addEventListener("DOMContentLoaded", () => {
     openPopupButton.addEventListener("click", () => {
       resizable.classList.toggle("active");
+      if (resizable.classList.contains('active')) {
+        localStorage.setItem('showTerminal', true)
+      } else {
+        localStorage.setItem('showTerminal', false)
+      }
     });
 
     popupCloseButton.addEventListener("click", () => {
       resizable.classList.remove("active");
+      localStorage.setItem('showTerminal', false)
       pageContent.style.paddingBottom = '0px';
     });
 
@@ -70,11 +89,13 @@
 
             resizable.style.height = event.rect.height + "px";
 
-            pageContent.style.paddingBottom = event.rect.height + 200 + "px";
+            pageContent.style.paddingBottom = event.rect.height + 40 + "px";
 
             y += event.deltaRect.top;
 
             target.setAttribute("data-y", y);
+
+            localStorage.setItem('iframeHeight', event.rect.height);
           },
         },
         modifiers: [
